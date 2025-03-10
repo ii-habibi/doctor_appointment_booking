@@ -1,3 +1,4 @@
+import 'package:doctor_appointments/widgets/doctor/doctor_bottom_nav.dart';
 import 'package:doctor_appointments/widgets/patient/bottom_Nav.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,7 @@ class _DoctorPatientSwitchState extends State<DoctorPatientSwitch> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomNavigationBarButton()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const DoctorBottomNavBar()));
                 },
               ),
             ],
