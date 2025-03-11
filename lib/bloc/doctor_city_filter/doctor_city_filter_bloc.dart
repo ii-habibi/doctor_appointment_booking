@@ -15,8 +15,7 @@ class DoctorCityFilterBloc extends Bloc<DoctorCityFilterEvent, DoctorCityFilterS
   Future<void> allCities(DoctorCityFilterAllCitiesEvent event, Emitter<DoctorCityFilterState> emit) async {
     List<String> cities = doctors.map((doc) => doc["city"] as String).toSet().toList();
     cities.sort();
-    cities.insert(0, "All Cities");
-    print(cities);
+    cities.insert(0, "All Cities");;
 
     emit(DoctorAllCitiesState(cities));
   }
@@ -25,7 +24,6 @@ class DoctorCityFilterBloc extends Bloc<DoctorCityFilterEvent, DoctorCityFilterS
     final searchQuery = event.searchQuery;
     final selectedCity = event.selectedCity;
 
-    // Filter categories
     List<Map<String, dynamic>> filteredCategories = categories.where((category) {
       final label = (category["label"] as String).toLowerCase();
       final matchesQuery = searchQuery.isEmpty || label.contains(searchQuery.toLowerCase());

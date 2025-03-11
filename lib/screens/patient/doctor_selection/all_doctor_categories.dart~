@@ -21,10 +21,11 @@ class _AllDoctorCategoriesScreenState extends State<AllDoctorCategoriesScreen> {
   void initState() {
     super.initState();
 
-   BlocProvider.of<DoctorCityFilterBloc>(context).add(DoctorCityFilterAllCitiesEvent());
+    context.read<DoctorCityFilterBloc>().add(DoctorCityFilterAllCitiesEvent());
     Future.delayed(Duration.zero, ()
     {
-      BlocProvider.of<DoctorCityFilterBloc>(context).add(SearchQueryEvent("", selectedCity));
+      context.read<DoctorCityFilterBloc>().add(
+          SearchQueryEvent("", selectedCity));
     });
   }
 
@@ -39,7 +40,7 @@ class _AllDoctorCategoriesScreenState extends State<AllDoctorCategoriesScreen> {
           children: [
             HomeSearchBar(
               onSearch: (value) {
-               BlocProvider.of<DoctorCityFilterBloc>(context).add(SearchQueryEvent(value, selectedCity));
+                context.read<DoctorCityFilterBloc>().add(SearchQueryEvent(value, selectedCity));
               },
             ),
             const SizedBox(height: 5),
@@ -67,7 +68,7 @@ class _AllDoctorCategoriesScreenState extends State<AllDoctorCategoriesScreen> {
                             setState(() {
                               selectedCity = value;
                             });
-                            BlocProvider.of<DoctorCityFilterBloc>(context).add(SearchQueryEvent("", selectedCity));
+                            context.read<DoctorCityFilterBloc>().add(SearchQueryEvent("", selectedCity));
                           }
                         },
                       );

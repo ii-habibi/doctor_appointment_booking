@@ -55,6 +55,8 @@ final List<Map<String, dynamic>> doctors = [
   {"id": 38, "name": "Dr. Joshua Morgan", "city": "Miami", "speciality": "Dermatologist", "category": "Skin", "experience": 9, "rating": 4.4},
   {"id": 39, "name": "Dr. Megan Cooper", "city": "Oakland", "speciality": "Psychiatrist", "category": "Mental Health", "experience": 12, "rating": 4.6},
   {"id": 40, "name": "Dr. Eric Rivera", "city": "Minneapolis", "speciality": "Gynecologist", "category": "Women's Health", "experience": 14, "rating": 4.7},
+  {"id": 41, "name": "Dr. Megan Khan", "city": "Oakland", "speciality": "Psychiatrist", "category": "Demaghu Dackter", "experience": 12, "rating": 4.6},
+
 ];
 
 final List<Map<String, dynamic>> patients = [
