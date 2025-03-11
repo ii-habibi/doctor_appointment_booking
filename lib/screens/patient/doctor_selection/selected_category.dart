@@ -43,29 +43,35 @@ class _DoctorSelectionScreenState extends State<DoctorSelectionScreen> {
                   .add(SearchDoctorsByNameEvent(value));
             },
           ),
-          BlocBuilder<SearchBloc, SearchState>(
-            builder: (context, state) {
-              if (state is DoctorsLoadedState) {
-                selectedCiti = state.selectedCity;
-                return DropdownButton<String>(
-                  value: selectedCiti,
-                  items: state.cities.map((city) {
-                    return DropdownMenuItem(value: city, child: Text(city));
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() {
-                        selectedCiti = value;
-                      });
-                      context
-                          .read<SearchBloc>()
-                          .add(SearchDoctorsByCityEvent(selectedCiti));
-                    }
-                  },
-                );
-              }
-              return const CircularProgressIndicator();
-            },
+          Row(
+            spacing: 5,
+            children: [
+              Text("     Filter by City: ",style: TextStyle(fontWeight: FontWeight.w500),),
+              BlocBuilder<SearchBloc, SearchState>(
+                builder: (context, state) {
+                  if (state is DoctorsLoadedState) {
+                    selectedCiti = state.selectedCity;
+                    return DropdownButton<String>(
+                      value: selectedCiti,
+                      items: state.cities.map((city) {
+                        return DropdownMenuItem(value: city, child: Text(city));
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            selectedCiti = value;
+                          });
+                          context
+                              .read<SearchBloc>()
+                              .add(SearchDoctorsByCityEvent(selectedCiti));
+                        }
+                      },
+                    );
+                  }
+                  return const CircularProgressIndicator();
+                },
+              ),
+            ],
           ),
           Expanded(
             child: BlocBuilder<SearchBloc, SearchState>(

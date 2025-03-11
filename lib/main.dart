@@ -1,7 +1,6 @@
 import 'package:doctor_appointments/auth/switch.dart';
 import 'package:doctor_appointments/bloc/doctor_city_filter/doctor_city_filter_bloc.dart';
 import 'package:doctor_appointments/bloc/doctor_selection_screen/search_bloc.dart';
-import 'package:doctor_appointments/widgets/patient/bottom_Nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

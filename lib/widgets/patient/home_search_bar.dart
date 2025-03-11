@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class HomeSearchBar extends StatefulWidget {
   final ValueChanged<String> onSearch;
 
-  const HomeSearchBar({Key? key, required this.onSearch}) : super(key: key);
+  const HomeSearchBar({super.key, required this.onSearch});
 
   @override
   State<HomeSearchBar> createState() => _HomeSearchBarState();

@@ -1,5 +1,5 @@
 import 'package:doctor_appointments/widgets/doctor/doctor_bottom_nav.dart';
-import 'package:doctor_appointments/widgets/patient/bottom_Nav.dart';
+import 'package:doctor_appointments/widgets/patient/bottom_nav.dart';
 import 'package:flutter/material.dart';
 
 class DoctorPatientSwitch extends StatefulWidget {
@@ -20,14 +20,14 @@ class _DoctorPatientSwitchState extends State<DoctorPatientSwitch> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextButton(
-                child: const Text("Patient"),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomNavigationBarButton()));
+                },
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomNavigationBarButton()));
-                },
+                child: const Text("Patient"),
               ),
               SizedBox(
                 height: 30,

@@ -1,5 +1,4 @@
 import 'package:doctor_appointments/bloc/doctor_city_filter/doctor_city_filter_bloc.dart';
-import 'package:doctor_appointments/dummyData/doctors_list.dart';
 import 'package:doctor_appointments/screens/patient/doctor_selection/selected_category.dart';
 import 'package:doctor_appointments/utils/doctor_utils.dart';
 import 'package:doctor_appointments/widgets/patient/home_search_bar.dart';
