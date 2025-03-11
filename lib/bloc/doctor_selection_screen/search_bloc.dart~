@@ -23,12 +23,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     selectedCity = event.selectedCity ?? "All Cities";
     selectedCategory = event.selectedCategory;
 
-
+    // Filter doctors by category and (optionally) city.
     originalDoctors = doctors.where((doctor) {
       return doctor["speciality"] == selectedCategory &&
           (selectedCity == "All Cities" || doctor["city"] == selectedCity);
     }).toList();
 
+    // Get list of cities for this category.
     cities = doctors
         .where((doctor) => doctor["speciality"] == selectedCategory)
         .map((doctor) => doctor["city"] as String)
@@ -46,7 +47,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Future<void> onSearchByCity(SearchDoctorsByCityEvent event, Emitter<SearchState> emit) async {
     selectedCity = event.selectedCity;
-
+    // Re-filter the original doctors by the new city.
     final filteredDoctors = originalDoctors.where((doctor) {
       return selectedCity == "All Cities" || doctor["city"] == selectedCity;
     }).toList();

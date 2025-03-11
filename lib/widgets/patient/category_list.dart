@@ -12,7 +12,7 @@ class CategoryListView extends StatefulWidget {
 class _CategoryListViewState extends State<CategoryListView> {
   List<Map<String, dynamic>> categories = [
     {"icon": "assets/icons/neurology.png", "label": "Neurologist"},
-    {"icon": "assets/icons/cardiology.png", "label": "Cardiology"},
+    {"icon": "assets/icons/cardiology.png", "label": "Cardiologist"},
     {"icon": "assets/icons/dermatologist.png", "label": "Dermatologist"},
     {"icon": "assets/icons/psychiatrist.png", "label": "Psychiatrist"},
     {"icon": "assets/icons/gynecologist.png", "label": "Gynecologist"},
@@ -23,6 +23,13 @@ class _CategoryListViewState extends State<CategoryListView> {
     {"icon": "assets/icons/ophthalmology.png", "label": "Ophthalmologist"},
     {"icon": "assets/icons/gastroenterologist.png", "label": "Gastroenterologist"},
     {"icon": "assets/icons/urology.png", "label": "Urologist"},
+    {"icon": "assets/icons/Endocrinologist.png", "label": "Endocrinologist"},
+    {"icon": "assets/icons/Rheumatologist.png", "label": "Rheumatologist"},
+    {"icon": "assets/icons/Pulmonologist.png", "label": "Pulmonologist"},
+    {"icon": "assets/icons/Orthopedic.png", "label": "Orthopedic"},
+    {"icon": "assets/icons/General Surgeon.png", "label": "General Surgeon"},
+    {"icon": "assets/icons/ENT Specialist.png", "label": "ENT Specialist"},
+    {"icon": "assets/icons/Anesthesiologist.png", "label": "Anesthesiologist"},
   ];
 
   @override

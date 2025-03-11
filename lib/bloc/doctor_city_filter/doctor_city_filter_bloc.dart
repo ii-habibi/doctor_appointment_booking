@@ -15,7 +15,7 @@ class DoctorCityFilterBloc extends Bloc<DoctorCityFilterEvent, DoctorCityFilterS
   Future<void> allCities(DoctorCityFilterAllCitiesEvent event, Emitter<DoctorCityFilterState> emit) async {
     List<String> cities = doctors.map((doc) => doc["city"] as String).toSet().toList();
     cities.sort();
-    cities.insert(0, "All Cities");;
+    cities.insert(0, "All Cities");
 
     emit(DoctorAllCitiesState(cities));
   }

@@ -1,22 +1,23 @@
 part of 'search_bloc.dart';
 
 @immutable
-sealed class SearchEvent {}
+abstract class SearchEvent {}
 
-final class DoctorsSelectionScreenFilterEvent extends SearchEvent{
-  String selectedCategory;
-  String selectedCity;
-  List<Map<String, dynamic>> doctors;
+class LoadDoctorsEvent extends SearchEvent {
+  final String selectedCategory;
+  final String? selectedCity;
 
-  DoctorsSelectionScreenFilterEvent({
-  required this.selectedCity,
-  required this.selectedCategory,
-  required this.doctors
-  });
+  LoadDoctorsEvent({required this.selectedCategory, this.selectedCity});
 }
 
- final class DoctorSearchEvent extends SearchEvent{
-  String query;
+class SearchDoctorsByCityEvent extends SearchEvent {
+  final String selectedCity;
 
-  DoctorSearchEvent(this.query);
+  SearchDoctorsByCityEvent(this.selectedCity);
+}
+
+class SearchDoctorsByNameEvent extends SearchEvent {
+  final String query;
+
+  SearchDoctorsByNameEvent(this.query);
 }
