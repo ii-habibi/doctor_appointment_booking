@@ -16,21 +16,17 @@ class AllDoctorCategoriesScreen extends StatefulWidget {
 
 class _AllDoctorCategoriesScreenState extends State<AllDoctorCategoriesScreen> {
   String selectedCity = "All Cities";
-  String searchQuery = "";
-
-  List<Map<String, dynamic>> get filteredCategory {
-    return categories.where((category) {
-      if (searchQuery.isEmpty) return true;
-
-      final label = (category["label"] as String).toLowerCase();
-      return label.contains(searchQuery.toLowerCase());
-    }).toList();
-  }
 
   @override
   void initState() {
     super.initState();
+
     context.read<DoctorCityFilterBloc>().add(DoctorCityFilterAllCitiesEvent());
+    Future.delayed(Duration.zero, ()
+    {
+      context.read<DoctorCityFilterBloc>().add(
+          SearchQueryEvent("", selectedCity));
+    });
   }
 
   @override
@@ -42,11 +38,11 @@ class _AllDoctorCategoriesScreenState extends State<AllDoctorCategoriesScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HomeSearchBar(onSearch: (value){
-              setState(() {
-                searchQuery = value;
-              });
-            }),
+            HomeSearchBar(
+              onSearch: (value) {
+                context.read<DoctorCityFilterBloc>().add(SearchQueryEvent(value, selectedCity));
+              },
+            ),
             const SizedBox(height: 5),
             Row(
               children: [
@@ -56,8 +52,8 @@ class _AllDoctorCategoriesScreenState extends State<AllDoctorCategoriesScreen> {
                 ),
                 const SizedBox(width: 20),
                 BlocBuilder<DoctorCityFilterBloc, DoctorCityFilterState>(
+                  buildWhen: (previous, current) => current is DoctorAllCitiesState, // Prevents unnecessary rebuilds
                   builder: (context, state) {
-
                     if (state is DoctorAllCitiesState) {
                       return DropdownButton<String>(
                         value: selectedCity,
@@ -68,80 +64,92 @@ class _AllDoctorCategoriesScreenState extends State<AllDoctorCategoriesScreen> {
                           );
                         }).toList(),
                         onChanged: (value) {
-                          setState(() {
-                            selectedCity = value!;
-                          });
+                          if (value != null) {
+                            setState(() {
+                              selectedCity = value;
+                            });
+                            context.read<DoctorCityFilterBloc>().add(SearchQueryEvent("", selectedCity));
+                          }
                         },
                       );
                     }
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(); // Shows only when fetching cities initially
                   },
                 ),
+
               ],
             ),
             const SizedBox(height: 5),
             Expanded(
-              child: ListView.builder(
-                itemCount: filteredCategory.length, // Use filtered list
-                itemBuilder: (context, index) {
-                  final item = filteredCategory[index]; // Use filtered data
-                  int count = getDoctorCount(item["label"], selectedCity);
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 3),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlueAccent.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: Hero(
-                          tag: item["label"],
-                          child: Image.asset(
-                            item["icon"],
-                            height: 40,
-                            width: 40,
-                          ),
-                        ),
-                        title: Text(
-                          item["label"],
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        subtitle: Text(
-                          "($count) Some text!",
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                        ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                transitionDuration: const Duration(milliseconds: 500),
-                                pageBuilder: (context, animation, secondaryAnimation) => DoctorSelectionScreen(
-                                  selectedCategory: item["label"],
-                                  selectedCity: selectedCity,
+              child: BlocBuilder<DoctorCityFilterBloc, DoctorCityFilterState>(
+                builder: (context, state) {
+                  if (state is AllDocCategorySearchState) {
+                    if (state.filteredCategories.isEmpty) {
+                      return const Center(child: Text("No categories available."));
+                    }
+                    return ListView.builder(
+                      itemCount: state.filteredCategories.length,
+                      itemBuilder: (context, index) {
+                        final item = state.filteredCategories[index];
+                        int count = getDoctorCount(item["label"], selectedCity);
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 3),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.lightBlueAccent.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              leading: Hero(
+                                tag: item["label"],
+                                child: Image.asset(
+                                  item["icon"],
+                                  height: 40,
+                                  width: 40,
                                 ),
-                                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                  const begin = Offset(1.0, 0.0);
-                                  const end = Offset.zero;
-                                  const curve = Curves.easeInOut;
-
-                                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                                  var offsetAnimation = animation.drive(tween);
-
-                                  return SlideTransition(
-                                    position: offsetAnimation,
-                                    child: child,
-                                  );
-                                },
                               ),
-                            );
-                          }
-                      ),
-                    ),
-                  );
+                              title: Text(
+                                item["label"],
+                                style: const TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              subtitle: Text(
+                                "($count) Available",
+                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    transitionDuration: const Duration(milliseconds: 500),
+                                    pageBuilder: (context, animation, secondaryAnimation) =>
+                                        DoctorSelectionScreen(
+                                          selectedCategory: item["label"],
+                                          selectedCity: selectedCity,
+                                        ),
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      const begin = Offset(1.0, 0.0);
+                                      const end = Offset.zero;
+                                      const curve = Curves.easeInOut;
+                                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator());
                 },
               ),
             ),
-
           ],
         ),
       ),

@@ -33,11 +33,12 @@ class _DoctorPatientSwitchState extends State<DoctorPatientSwitch> {
                 height: 30,
               ),
               TextButton(
-                child: Text("Doctor"),
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
                 ),
+
+                child: Text("Doctor"),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const DoctorBottomNavBar()));
                 },
